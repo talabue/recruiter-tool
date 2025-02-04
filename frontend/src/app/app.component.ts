@@ -1,23 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
+  imports: [RouterModule],
   template: `
-    <h1 class="text-3xl font-bold text-blue-500">Tailwind is working!</h1>
-    <p>{{ message }}</p>
-  `
+    <router-outlet></router-outlet> <!-- Dynamically load routes here -->
+  `,
 })
-export class AppComponent implements OnInit {
-  message = '';
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.http.get<{ message: string }>('/api/test').subscribe({
-      next: (response) => this.message = response.message,
-      error: (error) => console.error('Error fetching API:', error)
-    });
-  }
-}
+export class AppComponent {}

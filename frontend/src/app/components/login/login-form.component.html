@@ -1,0 +1,5 @@
+<form (submit)="onSubmit($event)" class="flex flex-col space-y-4">
+  <input type="email" [(ngModel)]="email" name="email" placeholder="Enter email" required />
+  <input type="password" [(ngModel)]="password" name="password" placeholder="Enter password" required />
+  <button type="submit">Login</button>
+</form>

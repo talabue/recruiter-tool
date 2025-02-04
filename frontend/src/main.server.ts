@@ -1,14 +1,5 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { config } from './app/app.config.server';
+import { bootstrapApp } from './bootstrap';
 
-const bootstrap = () => bootstrapApplication(AppComponent, {
-  ...config,
-  providers: [
-    ...(config.providers || []),
-    provideHttpClient(withFetch())  // ✅ Enable fetch() API support for SSR
-  ]
-});
+const bootstrap = () => bootstrapApp();
 
 export default bootstrap;
