@@ -1,59 +1,62 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';  // ✅ Import `tap` to handle side-effects
+import { Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common'; // ✅ Import this
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = '/api/auth';  // Using the proxy for backend calls
+  private apiUrl = '/api/auth';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: any // ✅ Inject platform ID
+  ) {
+    this.clearTokenOnAppStart(); // ✅ Clear token on app start
+  }
 
-  // ✅ Login method with token storage
   login(credentials: { email: string; password: string }): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(response => {
-        if (response?.token) {
-          console.log('✅ Token received:', response.token);  // Debugging output
-          this.saveToken(response.token); // ✅ Save token on successful login
-        }
-      })
-    );
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, credentials);
   }
 
-  // ✅ Register method with token storage
   register(name: string, email: string, password: string): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/register`, { name, email, password }).pipe(
-      tap(response => {
-        if (response?.token) {
-          console.log('✅ Registration successful, token saved.');
-          this.saveToken(response.token);
-        }
-      })
-    );
+    return this.http.post<{ token: string }>(`${this.apiUrl}/register`, { name, email, password });
   }
 
-  // ✅ Save JWT token in local storage
   saveToken(token: string): void {
-    localStorage.setItem('authToken', token);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('authToken', token);
+    }
   }
 
-  // ✅ Get JWT token from local storage
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('authToken');
+      console.log('🔍 AuthService: Retrieved token from localStorage:', token);
+      return token;
+    }
+    console.warn('⚠️ AuthService: Attempted to access localStorage on server.');
+    return null;
   }
-
-  // ✅ Remove JWT token (Logout)
+  
   logout(): void {
-    console.log('🚪 Logging out, token removed.');
-    localStorage.removeItem('authToken');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('authToken');
+    }
   }
 
-  // ✅ Check if user is logged in
   isAuthenticated(): boolean {
     const token = this.getToken();
-    console.log('🔍 Checking authentication status:', !!token);
-    return !!token;
+    console.log('🔍 Checking authentication, token found:', token);
+    return !!token; // Ensure this returns true when a valid token exists
+  }
+  
+
+  // ✅ Clears token on app load to force login each time
+  private clearTokenOnAppStart(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('authToken');
+    }
   }
 }

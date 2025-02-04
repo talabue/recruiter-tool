@@ -1,0 +1,28 @@
+<h2 class="text-2xl font-bold mb-4">Candidates List</h2>
+
+<!-- Show loading state -->
+<p *ngIf="loading" class="text-blue-500">Loading candidates...</p>
+
+<!-- Show error message if fetch fails -->
+<p *ngIf="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+
+<!-- Display candidates in a table -->
+<table *ngIf="candidates.length > 0" class="table-auto w-full border-collapse border border-gray-300">
+  <thead>
+    <tr class="bg-gray-200">
+      <th class="border p-2">Name</th>
+      <th class="border p-2">Email</th>
+      <th class="border p-2">Phone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let candidate of candidates" class="hover:bg-gray-100">
+      <td class="border p-2">{{ candidate.name }}</td>
+      <td class="border p-2">{{ candidate.email }}</td>
+      <td class="border p-2">{{ candidate.phone }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Show message if no candidates exist -->
+<p *ngIf="!loading && candidates.length === 0" class="text-gray-500">No candidates found.</p>
