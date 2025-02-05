@@ -18,8 +18,20 @@ export class CandidatesComponent implements OnInit {
   constructor(private candidateService: CandidateService, private router: Router) {}
 
   ngOnInit() {
-    this.fetchCandidates();
+    this.candidateService.getCandidates().subscribe({
+      next: (data) => {
+        this.candidates = data;
+        console.log('📂 Candidate Data:', this.candidates); // ✅ Debugging log
+        this.loading = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Failed to load candidates.';
+        console.error('Candidate Fetch Error:', error);
+        this.loading = false;
+      }
+    });
   }
+  
   
   //Edit Candidate
   editCandidate(candidateId: string) {
@@ -65,4 +77,17 @@ export class CandidatesComponent implements OnInit {
       });
     }
   }
+
+  viewResume(resumeUrl: string) {
+    const fullUrl = `http://localhost:5001/${resumeUrl}`; // ✅ Adjust for backend
+    const fileExtension = resumeUrl.split('.').pop()?.toLowerCase();
+  
+    if (fileExtension === 'pdf') {
+      // ✅ Open PDF in a new tab
+      window.open(fullUrl, '_blank');
+    } else {
+      // ✅ For DOCX and other files, force download
+      window.location.href = fullUrl;
+    }
+  }  
 }

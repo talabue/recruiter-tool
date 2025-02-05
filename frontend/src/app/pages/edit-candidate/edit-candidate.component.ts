@@ -12,7 +12,8 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule] // ✅ Enable form bindings
 })
 export class EditCandidateComponent implements OnInit {
-  candidate: any = { name: '', email: '' }; // ✅ Default values
+  candidate: any = { name: '', email: '' }; 
+  selectedFile: File | null = null; // ✅ Ensure this property exists
   errorMessage = '';
 
   constructor(
@@ -26,9 +27,35 @@ export class EditCandidateComponent implements OnInit {
     if (candidateId) {
       this.candidateService.getCandidate(candidateId).subscribe({
         next: (data) => this.candidate = data,
-        error: (error) => this.errorMessage = 'Failed to load candidate details.'
+        error: (error) => this.errorMessage = 'Failed to load candidate details.',
       });
     }
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onUpdateCandidate() {
+    if (!this.candidate.name || !this.candidate.email) {
+      this.errorMessage = 'Name and Email are required.';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('name', this.candidate.name);
+    formData.append('email', this.candidate.email);
+    formData.append('phone', this.candidate.phone);
+    formData.append('status', this.candidate.status);
+
+    if (this.selectedFile) {
+      formData.append('resume', this.selectedFile); // ✅ Attach resume file
+    }
+
+    this.candidateService.updateCandidate(this.candidate._id, formData).subscribe({
+      next: () => this.router.navigate(['/candidates']),
+      error: (error) => this.errorMessage = 'Failed to update candidate.',
+    });
   }
 
   onSubmit() {

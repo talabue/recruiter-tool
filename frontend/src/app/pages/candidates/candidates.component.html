@@ -32,7 +32,16 @@
                 class="bg-red-500 text-white px-3 py-1 rounded">
           Delete
         </button>
-      </td>      
+      </td>  
+      <td class="border px-4 py-2">
+        <td class="border px-4 py-2">
+            <button *ngIf="candidate.resumeUrl && candidate.resumeUrl.trim() !== ''" 
+              (click)="viewResume(candidate.resumeUrl)" 
+              class="bg-green-500 text-white px-3 py-1 rounded">
+              View Resume
+            </button>
+          </td>
+                  
     </tr>
   </tbody>
 </table>
