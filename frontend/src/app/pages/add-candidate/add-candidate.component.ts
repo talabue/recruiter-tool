@@ -23,12 +23,12 @@ export class AddCandidateComponent {
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
       const file = input.files[0];
-      const allowedExtensions = ['pdf', 'doc', 'docx', 'txt']; // ✅ Allowed formats
+      const allowedExtensions = ['pdf', 'doc', 'docx', 'txt'];
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
   
       if (fileExtension && allowedExtensions.includes(fileExtension)) {
-        this.resumeFile = file; // ✅ File is valid, save it
-        this.errorMessage = ''; // ✅ Clear any previous errors
+        this.resumeFile = file; 
+        this.errorMessage = ''; 
       } else {
         this.resumeFile = undefined;
         this.errorMessage = 'Invalid file type. Please upload a PDF, DOC, DOCX, or TXT file.';
@@ -48,13 +48,13 @@ export class AddCandidateComponent {
     formData.append('email', this.candidate.email);
     
     if (this.resumeFile) {
-      formData.append('resume', this.resumeFile); // ✅ Add resume only if provided
+      formData.append('resume', this.resumeFile); 
     }
 
     this.candidateService.createCandidate(formData).subscribe({
       next: () => {
         this.successMessage = 'Candidate added successfully!';
-        setTimeout(() => this.router.navigate(['/candidates']), 1500); // Redirect after success
+        setTimeout(() => this.router.navigate(['/candidates']), 1500); 
       },
       error: (error) => {
         this.errorMessage = 'Error adding candidate.';

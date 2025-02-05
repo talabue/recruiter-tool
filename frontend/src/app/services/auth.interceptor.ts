@@ -8,7 +8,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('🛑 AuthInterceptor is running - Intercepting request:', req.url);
+    console.log('AuthInterceptor is running - Intercepting request:', req.url);
 
     const token = this.authService.getToken();
     console.log('🔍 Token retrieved from AuthService:', token);
@@ -20,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       });
 
-      console.log('✅ Token attached to request:', clonedReq.headers.get('Authorization'));
+      console.log('Token attached to request:', clonedReq.headers.get('Authorization'));
       return next.handle(clonedReq);
     } else {
       console.warn('⚠️ No token found in AuthInterceptor, request sent without Authorization header.');

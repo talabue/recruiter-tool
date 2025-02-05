@@ -6,26 +6,21 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-// ✅ Resolve __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url);
+
+const __filename = fileURLToPath(import.meta.url); // Resolve directory name
 const __dirname = dirname(__filename);
-
 const router = express.Router();
-
-// ✅ Define storage configuration for Multer before using `upload`
-const storage = multer.diskStorage({
+const storage = multer.diskStorage({ //Define storage location and filename
     destination: (req, file, cb) => {
-      cb(null, 'uploads/'); // ✅ Ensure this folder exists
+      cb(null, 'uploads/'); 
     },
     filename: (req, file, cb) => {
       cb(null, `${Date.now()}-${file.originalname}`);
     }
   });
-  
-  // ✅ Initialize `upload` before using it
-  const upload = multer({ storage });
+const upload = multer({ storage }); //initialize multer with storage options
 
-// ✅ Create a Candidate
+// Create a Candidate
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { name, email, phone, resumeUrl, status } = req.body;
@@ -37,10 +32,10 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ Get All Candidates
+// Get All Candidates
 router.get('/', async (req, res) => {
     try {
-      const candidates = await Candidate.find().select('_id name email phone resumeUrl status createdAt'); // ✅ Explicitly include _id
+      const candidates = await Candidate.find().select('_id name email phone resumeUrl status createdAt'); 
       res.json(candidates);
     } catch (error) {
       res.status(500).json({ message: 'Server error retrieving candidates' });
@@ -48,7 +43,7 @@ router.get('/', async (req, res) => {
   });
   
 
-// ✅ Get a Single Candidate
+// Get a Single Candidate
 router.get("/:id", authMiddleware, async (req, res) => {
   try {
     const candidate = await Candidate.findById(req.params.id);
@@ -60,7 +55,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ Update Candidate with Resume Upload
+// Update Candidate
 router.put('/:id', authMiddleware, upload.single('resume'), async (req, res) => {
     try {
       const { name, email, phone, status } = req.body;
@@ -68,7 +63,6 @@ router.put('/:id', authMiddleware, upload.single('resume'), async (req, res) => 
   
       let updateData = { name, email, phone, status };
       
-      // ✅ If a resume is uploaded, add it to the update object
       if (req.file) {
         updateData.resumeUrl = `uploads/${req.file.filename}`; 
       }
@@ -86,7 +80,7 @@ router.put('/:id', authMiddleware, upload.single('resume'), async (req, res) => 
     }
   });
 
-// ✅ Delete a Candidate
+// Delete a Candidate
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const candidate = await Candidate.findByIdAndDelete(req.params.id);
@@ -98,7 +92,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-//Allow only PDF, DOC, DOCX, and TXT files
+//Allow only PDF, DOC, DOCX, and TXT files (Unused in this context)
 const fileFilter = (req, file, cb) => {
   const allowedTypes = [
     "application/pdf",
@@ -116,7 +110,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// ✅ Route to add a candidate with resume upload
+// Route to add a candidate with resume upload
 router.post("/", upload.single("resume"), async (req, res) => {
   try {
     const { name, email } = req.body;
@@ -135,14 +129,10 @@ router.post("/", upload.single("resume"), async (req, res) => {
   }
 });
 
-// ✅ Route to serve resumes
-//router.get("/resume/:filename", (req, res) => {
-//  res.sendFile(`${process.cwd()}/uploads/${req.params.filename}`);
-//});
-
+// Serve uploaded files
 router.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// ✅ Update Candidate Route
+// Update Candidate Route
 router.put("/:id", async (req, res) => {
   try {
     const { name, email } = req.body;

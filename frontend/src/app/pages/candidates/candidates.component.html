@@ -1,17 +1,13 @@
 <h2 class="text-2xl font-bold mb-4">Candidates List</h2>
 
-<!-- Show loading state -->
 <p *ngIf="loading" class="text-blue-500">Loading candidates...</p>
 
-<!-- Show error message if fetch fails -->
 <p *ngIf="errorMessage" class="text-red-500">{{ errorMessage }}</p>
 
-<!-- ✅ Add Candidate Button (Better Spacing) -->
 <button (click)="navigateToAddCandidate()" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">
     Add Candidate
   </button>
   
-<!-- ✅ Check if there are candidates before showing table -->
 <table *ngIf="candidates.length > 0" class="table-auto w-full border-collapse border border-gray-300">
   <thead>
     <tr class="bg-gray-100">
@@ -46,5 +42,4 @@
   </tbody>
 </table>
 
-<!-- ✅ Show this when no candidates are found -->
-<p *ngIf="!loading && candidates.length === 0" class="text-gray-500 text-center mt-4">No candidates found.</p>
+<p *ngIf="!loading && candidates.length === 0" class="text-gray-500 text-center mt-4"> Aw dang! No candidates found.</p>

@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [CommonModule, LoginFormComponent] // ✅ Add CommonModule for *ngIf support
+  imports: [CommonModule, LoginFormComponent] 
 })
 export class LoginPageComponent {
   errorMessage: string = '';
@@ -26,7 +26,7 @@ export class LoginPageComponent {
       },
       error: (error: any) => {
         this.errorMessage = error.error?.message || 'Login failed';
-        console.error('❌ Login error:', error);
+        console.error('Login error:', error);
       }
     });
   } 

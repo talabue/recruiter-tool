@@ -4,14 +4,14 @@ import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/c
 import { ApplicationConfig, Provider } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
-import { AuthInterceptor } from './app/services/auth.interceptor'; // ✅ Import Interceptor
+import { AuthInterceptor } from './app/services/auth.interceptor'; 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withFetch(), withInterceptorsFromDi()), // ✅ Use interceptors from DI
+    provideHttpClient(withFetch(), withInterceptorsFromDi()), 
     provideRouter(routes),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, // ✅ Register AuthInterceptor
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, // Register AuthInterceptor
   ],
 };
 

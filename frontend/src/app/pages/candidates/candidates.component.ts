@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CandidateService } from '../../services/candidate.service';
-import { CommonModule } from '@angular/common'; // ✅ Import CommonModule
+import { CommonModule } from '@angular/common'; 
 
 @Component({
   selector: 'app-candidates',
   templateUrl: './candidates.component.html',
   styleUrls: ['./candidates.component.css'],
   standalone: true,
-  imports: [CommonModule] // ✅ Keep CommonModule for *ngIf & *ngFor
+  imports: [CommonModule] 
 })
 export class CandidatesComponent implements OnInit {
   candidates: any[] = [];
@@ -21,7 +21,7 @@ export class CandidatesComponent implements OnInit {
     this.candidateService.getCandidates().subscribe({
       next: (data) => {
         this.candidates = data;
-        console.log('📂 Candidate Data:', this.candidates); // ✅ Debugging log
+        console.log('📂 Candidate Data:', this.candidates); 
         this.loading = false;
       },
       error: (error) => {
@@ -32,15 +32,13 @@ export class CandidatesComponent implements OnInit {
     });
   }
   
-  
-  //Edit Candidate
+  // Edit Candidate
   editCandidate(candidateId: string) {
-    console.log('📝 Navigating to edit candidate:', candidateId); // ✅ Debugging output
+    console.log('📝 Navigating to edit candidate:', candidateId); 
     this.router.navigate(['/edit-candidate', candidateId]);
   }
   
-
-  // ✅ Fetch all candidates from API
+  // Fetch all candidates from API
   fetchCandidates(): void {
     this.candidateService.getCandidates().subscribe({
       next: (data) => {
@@ -55,19 +53,18 @@ export class CandidatesComponent implements OnInit {
     });
   }
 
-  // ✅ Navigate to Add Candidate Form
+  // Navigate to Add Candidate Form
   navigateToAddCandidate(): void {
     this.router.navigate(['/candidates/add']);
   }
 
-  // ✅ Delete a candidate
+  // Delete a candidate
   deleteCandidate(candidateId: string) {
     const confirmed = window.confirm('Are you sure you want to delete this candidate?');
   
     if (confirmed) {
       this.candidateService.deleteCandidate(candidateId).subscribe({
         next: () => {
-          // ✅ Remove the candidate from the local array to update the UI
           this.candidates = this.candidates.filter(candidate => candidate._id !== candidateId);
         },
         error: (error) => {
@@ -79,15 +76,13 @@ export class CandidatesComponent implements OnInit {
   }
 
   viewResume(resumeUrl: string) {
-    const fullUrl = `http://localhost:5001/api/uploads/${resumeUrl}`; // ✅ Ensure correct API path
+    const fullUrl = `http://localhost:5001/api/uploads/${resumeUrl}`; 
     const fileExtension = resumeUrl.split('.').pop()?.toLowerCase();
   
     if (fileExtension === 'pdf') {
-      // ✅ Open PDF in a new tab
-      window.open(fullUrl, '_blank');
+      window.open(fullUrl, '_blank'); // Open new tab for PDF
     } else {
-      // ✅ For DOCX and other files, force download
-      window.location.href = fullUrl;
+      window.location.href = fullUrl; // Trigger download for other file types
     }
   }  
 }

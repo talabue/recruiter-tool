@@ -9,11 +9,11 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './edit-candidate.component.html',
   styleUrls: ['./edit-candidate.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule] // ✅ Enable form bindings
+  imports: [CommonModule, FormsModule] // Enable form bindings
 })
 export class EditCandidateComponent implements OnInit {
   candidate: any = { name: '', email: '' }; 
-  selectedFile: File | null = null; // ✅ Ensure this property exists
+  selectedFile: File | null = null; 
   errorMessage = '';
 
   constructor(
@@ -49,7 +49,7 @@ export class EditCandidateComponent implements OnInit {
     formData.append('status', this.candidate.status);
 
     if (this.selectedFile) {
-      formData.append('resume', this.selectedFile); // ✅ Attach resume file
+      formData.append('resume', this.selectedFile); 
     }
 
     this.candidateService.updateCandidate(this.candidate._id, formData).subscribe({
@@ -60,7 +60,7 @@ export class EditCandidateComponent implements OnInit {
 
   onSubmit() {
     this.candidateService.updateCandidate(this.candidate._id, this.candidate).subscribe({
-      next: () => this.router.navigate(['/candidates']), // ✅ Redirect to list
+      next: () => this.router.navigate(['/candidates']), 
       error: (error) => this.errorMessage = 'Failed to update candidate.'
     });
   }

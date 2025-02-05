@@ -11,6 +11,6 @@ export class DashboardComponent {
   constructor(private router: Router) {}
 
   navigateToCandidates() {
-    this.router.navigate(['/candidates']); // ✅ Navigates to Candidates Page
+    this.router.navigate(['/candidates']); 
   }
 }
