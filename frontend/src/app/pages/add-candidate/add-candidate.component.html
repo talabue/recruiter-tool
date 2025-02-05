@@ -18,9 +18,11 @@
   </div>
 
   <div>
-    <label class="block font-semibold">Resume (Optional, PDF only)</label>
-    <input type="file" (change)="onFileSelected($event)" accept=".pdf" class="border px-3 py-2 w-full">
+    <label class="block font-semibold">Resume (Optional, PDF, DOCX, DOC, TXT)</label>
+    <input type="file" (change)="onFileSelected($event)" 
+           accept=".pdf,.doc,.docx,.txt" class="border px-3 py-2 w-full">
   </div>
+  
 
   <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
 </form>

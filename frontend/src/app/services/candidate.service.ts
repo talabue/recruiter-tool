@@ -26,8 +26,7 @@ export class CandidateService {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 
-  updateCandidate(candidateId: string, updatedData: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${candidateId}`, updatedData);
-  }
-   
+  updateCandidate(candidateId: string, formData: FormData): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/candidates/${candidateId}`, formData);
+  }  
 }

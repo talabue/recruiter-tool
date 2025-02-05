@@ -79,7 +79,7 @@ export class CandidatesComponent implements OnInit {
   }
 
   viewResume(resumeUrl: string) {
-    const fullUrl = `http://localhost:5001/${resumeUrl}`; // ✅ Adjust for backend
+    const fullUrl = `http://localhost:5001/api/uploads/${resumeUrl}`; // ✅ Ensure correct API path
     const fileExtension = resumeUrl.split('.').pop()?.toLowerCase();
   
     if (fileExtension === 'pdf') {
