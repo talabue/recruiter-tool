@@ -1,0 +1,28 @@
+<h2 class="text-2xl font-bold mb-4">Edit Candidate</h2>
+
+<form (ngSubmit)="onUpdateCandidate()">
+    <label>Name:</label>
+    <input type="text" [(ngModel)]="candidate.name" name="name" required />
+  
+    <label>Email:</label>
+    <input type="email" [(ngModel)]="candidate.email" name="email" required />
+  
+    <label>Phone:</label>
+    <input type="text" [(ngModel)]="candidate.phone" name="phone" />
+  
+    <label>Status:</label>
+    <select [(ngModel)]="candidate.status" name="status">
+      <option value="Active">Active</option>
+      <option value="Interviewing">Interviewing</option>
+      <option value="Hired">Hired</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+  
+    <label>Resume:</label>
+    <input type="file" (change)="onFileSelected($event)" />
+  
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update Candidate</button>
+  </form>
+  
+  <p *ngIf="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+  

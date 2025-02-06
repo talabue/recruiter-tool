@@ -1,0 +1,45 @@
+<h2 class="text-2xl font-bold mb-4">Candidates List</h2>
+
+<p *ngIf="loading" class="text-blue-500">Loading candidates...</p>
+
+<p *ngIf="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+
+<button (click)="navigateToAddCandidate()" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">
+    Add Candidate
+  </button>
+  
+<table *ngIf="candidates.length > 0" class="table-auto w-full border-collapse border border-gray-300">
+  <thead>
+    <tr class="bg-gray-100">
+      <th class="border px-4 py-2">Name</th>
+      <th class="border px-4 py-2">Email</th>
+      <th class="border px-4 py-2">Actions</th> 
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let candidate of candidates" class="hover:bg-gray-50">
+      <td class="border px-4 py-2">{{ candidate.name }}</td>
+      <td class="border px-4 py-2">{{ candidate.email }}</td>
+      <td class="border px-4 py-2">
+        <button (click)="editCandidate(candidate._id)" 
+                class="bg-yellow-500 text-white px-3 py-1 rounded">
+        Edit</button>
+        <button (click)="deleteCandidate(candidate._id)" 
+                class="bg-red-500 text-white px-3 py-1 rounded">
+          Delete
+        </button>
+      </td>  
+      <td class="border px-4 py-2">
+        <td class="border px-4 py-2">
+            <button *ngIf="candidate.resumeUrl && candidate.resumeUrl.trim() !== ''" 
+              (click)="viewResume(candidate.resumeUrl)" 
+              class="bg-green-500 text-white px-3 py-1 rounded">
+              View Resume
+            </button>
+          </td>
+                  
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="!loading && candidates.length === 0" class="text-gray-500 text-center mt-4"> Aw dang! No candidates found.</p>

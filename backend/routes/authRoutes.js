@@ -7,7 +7,7 @@ import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// @route    POST /api/auth/register
+// @route POST /api/auth/register
 router.post(
   '/register',
   [
@@ -50,7 +50,7 @@ router.post(
   }
 );
 
-// @route    POST /api/auth/login
+// @route POST /api/auth/login
 router.post(
     '/login',
     [
@@ -90,13 +90,11 @@ router.post(
 
 router.get('/me', authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password'); // Exclude password
+    const user = await User.findById(req.user.id).select('-password'); 
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-
-// ✅ Ensure THIS export is correct
 export default router;

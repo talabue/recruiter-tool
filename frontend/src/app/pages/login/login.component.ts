@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [CommonModule, LoginFormComponent] // ✅ Add CommonModule for *ngIf support
+  imports: [CommonModule, LoginFormComponent] 
 })
 export class LoginPageComponent {
   errorMessage: string = '';
@@ -17,17 +17,17 @@ export class LoginPageComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin(credentials: { email: string; password: string }) {
-    console.log('🟢 Attempting login with:', credentials); // Debugging output
-
     this.authService.login(credentials).subscribe({
-      next: () => {
-        console.log('✅ Login successful! Redirecting...');
-        this.router.navigate(['/dashboard']); // ✅ Navigate after login
+      next: (response) => {
+        console.log('✅ Login successful, token received:', response.token);
+        this.authService.saveToken(response.token);
+        console.log('🔍 Token saved:', this.authService.getToken());
+        this.router.navigate(['/dashboard']);
       },
       error: (error: any) => {
-        console.error('❌ Login failed:', error);
         this.errorMessage = error.error?.message || 'Login failed';
-      },
+        console.error('Login error:', error);
+      }
     });
-  }
+  } 
 }
